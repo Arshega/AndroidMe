@@ -3,12 +3,18 @@ package com.hyperdev.androidme;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.hyperdev.androidme.data.AndroidImageAssets;
+
+import java.util.List;
+import java.util.Random;
 
 import static com.hyperdev.androidme.R.id.Body;
 
@@ -20,10 +26,19 @@ public class BodyPartFragment extends Fragment {
     private View head;
     private View body;
     private View leg;
-    AndroidImageAssets images = new AndroidImageAssets();
+    private List<Integer> integerList;
+    private List<Integer> viewBody;
+    private List<Integer> viewLeg;
+    private Random random;
+    private int indexCount;
+    private int indexBody;
+    private int indexLeg;
 
     public BodyPartFragment() {
-        // Required empty public constructor
+        integerList = AndroidImageAssets.getHeads();
+        viewBody = AndroidImageAssets.getBodies();
+        viewLeg = AndroidImageAssets.getLegs();
+        indexCount = 0;
     }
 
 
@@ -35,23 +50,37 @@ public class BodyPartFragment extends Fragment {
         head = view.findViewById(R.id.Head);
         body = view.findViewById(Body);
         leg = view.findViewById(R.id.Legs);
+        head.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (indexCount == integerList.size()) {
+                    indexCount = 0;
+                }
+                head.setBackground(ResourcesCompat.getDrawable(getResources(), integerList.get(indexCount++), null));
+            }
+        });
+
+        body.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (indexBody == viewBody.size()) {
+                    indexBody = 0;
+                }
+                body.setBackground(ResourcesCompat.getDrawable(getResources(), viewBody.get(indexBody++), null));
+            }
+        });
+
+        leg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (indexLeg == viewLeg.size()) {
+                    indexLeg = 0;
+                }
+                leg.setBackground(ResourcesCompat.getDrawable(getResources(), viewLeg.get(indexLeg++), null));
+            }
+        });
 
         return view;
     }
-
-    public void changeHead(int pic){
-        images.getHeads();
-    }
-
-    public void changeBody(int pic){
-        images.getBodies();
-    }
-
-    public void changeLeg(int pic){
-        images.getLegs();
-    }
-
-
-
 
 }
